@@ -1,0 +1,40 @@
+===========================================
+SIMPLE FORMAT - COPY PASTE KARO
+===========================================
+
+Render Dashboard mein add karo:
+
+NAME                VALUE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DB_HOST             localhost
+
+DB_USER             root
+
+DB_PASSWORD         [APNA_PASSWORD]
+
+DB_NAME             voter_new
+
+MONGO_CONNECTION_STRING
+                    mongodb+srv://hosteluser:<db_password>@cluster0.ezzkjmw.mongodb.net/?appName=Cluster0
+
+MONGO_PASSWORD      [APNA_PASSWORD]
+
+MONGO_DB            voter_db
+
+APP_ENV             production
+
+APP_DEBUG            false
+
+PHP_VERSION         8.2
+
+===========================================
+
+Instructions:
+1. "Add Environment Variable" click
+2. NAME column se left field mein dalo
+3. VALUE column se right field mein dalo
+4. Repeat sabke liye
+
+===========================================
+

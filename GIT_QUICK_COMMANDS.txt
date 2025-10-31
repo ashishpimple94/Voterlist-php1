@@ -1,0 +1,66 @@
+===========================================
+GIT PUSH - QUICK COMMANDS
+===========================================
+
+Terminal mein yeh commands run karo:
+
+===========================================
+STEP 1: Initialize Git
+===========================================
+
+cd /Users/ashishpimple/Downloads/voter_api_project
+git init
+
+===========================================
+STEP 2: Add All Files
+===========================================
+
+git add .
+
+===========================================
+STEP 3: Commit
+===========================================
+
+git commit -m "Initial commit: Voter API project"
+
+===========================================
+STEP 4: GitHub pe Repository Banao
+===========================================
+
+1. https://github.com pe jao
+2. Login karo
+3. "New" repository click karo
+4. Name: voter-api-project
+5. "Create repository" click karo
+
+===========================================
+STEP 5: Remote Add Karo
+===========================================
+
+git remote add origin https://github.com/YOUR_USERNAME/voter-api-project.git
+
+(YOUR_USERNAME ki jagah apna username dalo)
+
+===========================================
+STEP 6: Push Karo
+===========================================
+
+git branch -M main
+git push -u origin main
+
+===========================================
+⚠️ IMPORTANT:
+===========================================
+
+- .env file automatically ignore ho jayega
+- Passwords safe rahenge
+- Agar GitHub password prompt aaye, token use karo
+
+===========================================
+ONE-LINER (All Steps):
+===========================================
+
+git init && git add . && git commit -m "Initial commit" && echo "Now add remote: git remote add origin https://github.com/YOUR_USERNAME/voter-api-project.git" && echo "Then push: git branch -M main && git push -u origin main"
+
+===========================================
+

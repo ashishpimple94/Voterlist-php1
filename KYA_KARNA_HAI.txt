@@ -1,0 +1,34 @@
+===========================================
+🚀 YE FILE BANANI HAI - YAHI MAIN FILE HAI
+===========================================
+
+📝 FILE KA NAAM: .env
+
+===========================================
+STEP 1: File banayein
+===========================================
+Terminal mein yeh command run karein:
+
+    cp env.example .env
+
+Ya manually ek .env file banayein
+
+===========================================
+STEP 2: .env file mein yeh values dalen
+===========================================
+
+DB_PASSWORD=apna_mysql_password
+MONGO_PASSWORD=apna_mongodb_password
+
+Example:
+DB_PASSWORD=1234
+MONGO_PASSWORD=MySecurePass123
+
+===========================================
+STEP 3: DONE! ✅
+===========================================
+
+Ab aap environment variables use kar sakte hain!
+
+Bhai, .env file hi banani hai - yahi sabse important file hai!
+

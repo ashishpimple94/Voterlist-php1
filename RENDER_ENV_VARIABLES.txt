@@ -1,0 +1,71 @@
+===========================================
+RENDER ENVIRONMENT VARIABLES - COPY KARO
+===========================================
+
+Render Dashboard → Environment Variables section mein
+yeh sab variables add karo:
+
+===========================================
+📋 VARIABLE LIST (Copy-Paste Ready)
+===========================================
+
+1. DB_HOST
+   Value: localhost
+   (Ya apna MySQL host address)
+
+2. DB_USER
+   Value: root
+   (Ya apna MySQL username)
+
+3. DB_PASSWORD
+   Value: [APNA_MYSQL_PASSWORD_DALO]
+   (Yaha apna actual MySQL password)
+
+4. DB_NAME
+   Value: voter_new
+   (Ya apna database name)
+
+5. MONGO_CONNECTION_STRING
+   Value: mongodb+srv://hosteluser:<db_password>@cluster0.ezzkjmw.mongodb.net/?appName=Cluster0
+
+6. MONGO_PASSWORD
+   Value: [APNA_MONGODB_PASSWORD_DALO]
+   (Yaha apna actual MongoDB Atlas password)
+
+7. MONGO_DB
+   Value: voter_db
+   (Ya apna MongoDB database name)
+
+8. APP_ENV
+   Value: production
+
+9. APP_DEBUG
+   Value: false
+
+10. PHP_VERSION
+    Value: 8.2
+
+===========================================
+📝 DETAILED INSTRUCTIONS
+===========================================
+
+Render Dashboard mein:
+1. "Add Environment Variable" button click karo
+2. Har variable ke liye:
+   - Variable Name: Left side mein (e.g., DB_HOST)
+   - Variable Value: Right side mein (e.g., localhost)
+3. Repeat karo sabke liye
+4. Save/Deploy karo
+
+===========================================
+🔐 SECURITY NOTES
+===========================================
+
+Important:
+✓ DB_PASSWORD = Real MySQL password dalo
+✓ MONGO_PASSWORD = Real MongoDB Atlas password dalo
+✓ Values masked rahengi (dots se dikhengi) - yeh normal hai
+✓ Production passwords use karo, test passwords nahi
+
+===========================================
+

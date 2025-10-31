@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: voter-api
+    runtime: php
+    plan: free
+    buildCommand: composer install --no-dev --optimize-autoloader || echo "Composer install completed"
+    startCommand: php -S 0.0.0.0:$PORT -t public public/index.php || php -S 0.0.0.0:$PORT -t public
+    envVars:
+      - key: PHP_VERSION
+        value: 8.2
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: MONGO_CONNECTION_STRING
+        sync: false
+      - key: MONGO_PASSWORD
+        sync: false
+      - key: MONGO_DB
+        sync: false
+

@@ -1,0 +1,130 @@
+===========================================
+🚨 DEPLOYMENT FIX - STEP BY STEP
+===========================================
+
+Agar deployment nahi ho raha, yeh steps follow karo:
+
+===========================================
+STEP 1: LOGS CHECK KARO
+===========================================
+
+Render Dashboard mein:
+1. Apne service pe click karo
+2. "Logs" tab open karo
+3. "Build Logs" dekho - kya error aaya?
+4. Error message copy karo aur share karo
+
+===========================================
+STEP 2: COMMON FIXES
+===========================================
+
+Fix 1: MongoDB Extension Issue (Most Common!)
+
+Problem: MongoDB extension Render free tier pe nahi hai
+
+Solution:
+1. composer.json file open karo
+2. MongoDB dependency remove karo:
+
+FROM:
+  "mongodb/mongodb": "^1.17"
+
+TO:
+  (Remove this line completely)
+
+3. Git push karo:
+   git add composer.json
+   git commit -m "Remove MongoDB for Render"
+   git push
+
+4. Render pe redeploy karo
+
+===========================================
+STEP 3: BUILD COMMAND FIX
+===========================================
+
+Render Dashboard → Settings → Build Command:
+
+Change to:
+composer install --no-dev
+
+Ya simpler:
+composer install
+
+===========================================
+STEP 4: START COMMAND FIX
+===========================================
+
+Render Dashboard → Settings → Start Command:
+
+Option 1:
+php -S 0.0.0.0:$PORT -t public
+
+Option 2:
+cd public && php -S 0.0.0.0:$PORT
+
+Option 3:
+php -S 0.0.0.0:$PORT public/index.php
+
+===========================================
+STEP 5: TEST SIMPLE VERSION
+===========================================
+
+Agar phir bhi nahi ho raha:
+
+1. public/index.php simplify karo:
+   
+   <?php
+   echo json_encode(['status' => 'ok']);
+   ?>
+
+2. Push karo aur deploy karo
+3. Agar yeh work kare, phir gradually features add karo
+
+===========================================
+STEP 6: VERIFY FILES
+===========================================
+
+Ye files zaroor hone chahiye:
+
+✅ composer.json (without MongoDB)
+✅ public/index.php
+✅ render.yaml (optional)
+
+===========================================
+STEP 7: CHECK ENVIRONMENT VARIABLES
+===========================================
+
+Render Dashboard → Environment section:
+
+Minimum variables:
+- DB_HOST
+- DB_USER  
+- DB_PASSWORD
+- DB_NAME
+
+===========================================
+QUICK TEST
+===========================================
+
+Deploy ke baad test karo:
+
+https://your-service.onrender.com/simple_test.php
+
+Ya:
+
+https://your-service.onrender.com/
+
+===========================================
+STILL NOT WORKING?
+===========================================
+
+Share ye details:
+
+1. Build Logs (last 30 lines)
+2. Runtime Logs (error messages)
+3. Settings Screenshot (Build/Start commands)
+4. Exact error message
+
+===========================================
+

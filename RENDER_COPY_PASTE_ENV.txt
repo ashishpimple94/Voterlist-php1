@@ -1,0 +1,54 @@
+===========================================
+RENDER - COPY PASTE READY ENVIRONMENT VARIABLES
+===========================================
+
+Render Dashboard → Environment Variables section mein
+yeh sab values copy-paste karo:
+
+===========================================
+VARIABLE NAME          | VARIABLE VALUE
+===========================================
+
+DB_HOST                | localhost
+
+DB_USER                | root
+
+DB_PASSWORD            | [APNA_MYSQL_PASSWORD]
+
+DB_NAME                | voter_new
+
+MONGO_CONNECTION_STRING| mongodb+srv://hosteluser:<db_password>@cluster0.ezzkjmw.mongodb.net/?appName=Cluster0
+
+MONGO_PASSWORD         | [APNA_MONGODB_PASSWORD]
+
+MONGO_DB               | voter_db
+
+APP_ENV                | production
+
+APP_DEBUG               | false
+
+PHP_VERSION            | 8.2
+
+===========================================
+📝 INSTRUCTIONS:
+===========================================
+
+1. Render Dashboard → Environment section
+2. "Add Environment Variable" click
+3. Left side: Variable Name (e.g., DB_HOST)
+4. Right side: Variable Value (e.g., localhost)
+5. Repeat sabke liye
+6. [APNA_MYSQL_PASSWORD] ki jagah apna password dalo
+7. [APNA_MONGODB_PASSWORD] ki jagah apna password dalo
+
+===========================================
+⚠️ IMPORTANT:
+===========================================
+
+- DB_PASSWORD = Apna real MySQL password
+- MONGO_PASSWORD = Apna real MongoDB password  
+- Values dots (.........) se dikhengi - yeh normal hai
+- Variable names exactly same rakhna
+
+===========================================
+

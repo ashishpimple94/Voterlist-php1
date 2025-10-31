@@ -1,0 +1,41 @@
+===========================================
+MONGODB ONLY - RENDER ENVIRONMENT VARIABLES
+===========================================
+
+Sirf MongoDB ke liye yeh variables add karo:
+
+===========================================
+VARIABLE NAME          | VARIABLE VALUE
+===========================================
+
+MONGO_CONNECTION_STRING| mongodb+srv://hosteluser:<db_password>@cluster0.ezzkjmw.mongodb.net/?appName=Cluster0
+
+MONGO_PASSWORD         | [APNA_MONGODB_PASSWORD]
+
+MONGO_DB               | voter_db
+
+===========================================
+📝 INSTRUCTIONS:
+===========================================
+
+1. Render Dashboard → Environment section
+2. "Add Environment Variable" click
+3. 3 variables add karo:
+   - MONGO_CONNECTION_STRING
+   - MONGO_PASSWORD
+   - MONGO_DB
+4. [APNA_MONGODB_PASSWORD] ki jagah apna password dalo
+
+===========================================
+✅ MINIMUM REQUIRED:
+===========================================
+
+Sirf yeh 2 variables zaroori hain:
+
+1. MONGO_CONNECTION_STRING
+2. MONGO_PASSWORD
+
+MONGO_DB optional hai (default: voter_db)
+
+===========================================
+
