@@ -110,11 +110,37 @@ const connectDB = async () => {
     } catch (error) {
         console.error('❌ MongoDB connection error:', error.message);
         console.error('');
-        console.error('💡 Troubleshooting:');
-        console.error('   1. Check MONGO_CONNECTION_STRING format is correct');
-        console.error('   2. Verify MONGO_PASSWORD is correct (check for special characters)');
-        console.error('   3. Ensure MongoDB Atlas IP whitelist includes 0.0.0.0/0 (or your IP)');
-        console.error('   4. Verify username and database name are correct');
+        
+        // Extract username for display
+        const userMatch = mongoURI.match(/mongodb\+srv:\/\/([^:]+):/);
+        const username = userMatch ? userMatch[1] : 'unknown';
+        
+        if (error.message.includes('authentication failed') || error.message.includes('bad auth')) {
+            console.error('🔴 AUTHENTICATION FAILED');
+            console.error('───────────────────────');
+            console.error('This usually means:');
+            console.error('  • Username or password is incorrect');
+            console.error('  • User does not exist in MongoDB Atlas');
+            console.error('  • Password was changed but .env not updated');
+            console.error('');
+            console.error('💡 Quick Fix:');
+            console.error('  1. MongoDB Atlas Dashboard → Database Access');
+            console.error('  2. Find user:', username);
+            console.error('  3. Edit → Reset Password → Copy new password');
+            console.error('  4. Update .env: MONGO_PASSWORD=new_password');
+            console.error('  5. Run: node debug-mongo-auth.js to test');
+            console.error('');
+        } else if (error.message.includes('timeout') || error.message.includes('ENOTFOUND')) {
+            console.error('🔴 NETWORK/TIMEOUT ERROR');
+            console.error('──────────────────────');
+            console.error('Check:');
+            console.error('  1. IP whitelist in MongoDB Atlas (Network Access)');
+            console.error('  2. Add 0.0.0.0/0 to allow all IPs');
+            console.error('  3. Internet connection');
+            console.error('');
+        }
+        
+        console.error('🔧 Run diagnostic: node debug-mongo-auth.js');
         console.error('');
         // Don't exit process, let the app continue without DB
     }
