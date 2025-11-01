@@ -3,8 +3,8 @@ services:
     name: voter-api
     runtime: php
     plan: free
-    buildCommand: composer install --no-dev --optimize-autoloader || echo "Composer install completed"
-    startCommand: php -S 0.0.0.0:$PORT -t public public/index.php || php -S 0.0.0.0:$PORT -t public
+    buildCommand: composer install --no-dev --optimize-autoloader
+    startCommand: php -S 0.0.0.0:$PORT -t public
     envVars:
       - key: PHP_VERSION
         value: 8.2

@@ -26,10 +26,8 @@ $path = trim($path, '/');
 
 // Route to appropriate API file
 $routes = [
-    'fetch_voter_data' => '../fetch_voter_data.php',
-    'get_voter_by_id' => '../get_voter_by_id.php',
-    'upload_xlsx_to_json' => '../upload_xlsx_to_json.php',
-    'fetch_voter_data_mongo' => '../fetch_voter_data_mongo.php',
+    'health' => 'health.php',
+    'simple_test' => 'simple_test.php',
 ];
 
 // Default route
@@ -40,10 +38,9 @@ if (empty($path) || $path === '/') {
         'message' => 'Voter API is running',
         'version' => '1.0',
         'endpoints' => [
-            '/fetch_voter_data' => 'GET/POST - Fetch voter data',
-            '/get_voter_by_id?id=EPIC123' => 'GET - Get voter by ID',
-            '/upload_xlsx_to_json' => 'POST - Upload Excel/CSV',
-            '/fetch_voter_data_mongo' => 'GET/POST - Fetch voter data (MongoDB)',
+            '/' => 'GET - API status',
+            '/health' => 'GET - Health check',
+            '/simple_test' => 'GET - Simple test endpoint',
         ]
     ], JSON_UNESCAPED_UNICODE);
     exit;
@@ -54,6 +51,7 @@ $routeFound = false;
 foreach ($routes as $route => $file) {
     if ($path === $route || strpos($path, $route . '/') === 0) {
         $routeFound = true;
+        // Routes are in same directory as index.php
         $filePath = __DIR__ . '/' . $file;
         
         if (file_exists($filePath)) {
