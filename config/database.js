@@ -35,14 +35,31 @@ const connectDB = async () => {
             
             // Add database name if not present in connection string
             const dbName = process.env.MONGO_DB || 'voter_db';
-            if (!mongoURI.match(/\/[^/?]+(\?|$)/)) {
-                // No database name in URI, add it
-                if (mongoURI.includes('?')) {
-                    mongoURI = mongoURI.replace('?', `/${dbName}?`);
-                } else {
-                    mongoURI = mongoURI.endsWith('/') ? `${mongoURI}${dbName}` : `${mongoURI}/${dbName}`;
+            // Check if database name already exists (between / and ?)
+            const dbNamePattern = /@[^/]+\/([^/?]+)/;
+            const existingDb = mongoURI.match(dbNamePattern);
+            
+            if (!existingDb || existingDb[1].trim() === '') {
+                // No database name or empty, add it
+                // Common pattern: mongodb+srv://user:pass@host/?options -> mongodb+srv://user:pass@host/dbname?options
+                if (mongoURI.includes('/?')) {
+                    // Replace /? with /dbname?
+                    mongoURI = mongoURI.replace('/?', `/${dbName}?`);
+                } else if (mongoURI.match(/@[^/]+\?/)) {
+                    // @host?pattern -> @host/dbname?pattern
+                    mongoURI = mongoURI.replace(/(@[^/]+)\?/, `$1/${dbName}?`);
+                } else if (!mongoURI.includes('@') || !mongoURI.match(/@[^/]+\//)) {
+                    // No / after host, append /dbname
+                    const qIndex = mongoURI.indexOf('?');
+                    if (qIndex !== -1) {
+                        mongoURI = mongoURI.substring(0, qIndex) + `/${dbName}` + mongoURI.substring(qIndex);
+                    } else {
+                        mongoURI = mongoURI + `/${dbName}`;
+                    }
                 }
                 console.log(`📂 Database name added: ${dbName}`);
+            } else {
+                console.log(`ℹ️  Database name already in connection string: ${existingDb[1]}`);
             }
         } else {
             // Fallback: construct connection string
@@ -72,11 +89,11 @@ const connectDB = async () => {
         }
         
         // Debug: Check if password was replaced (only in development)
-        if (process.env.NODE_ENV === 'development') {
-            if (mongoURI.includes('<db_password>')) {
-                console.warn('⚠️ WARNING: Password placeholder <db_password> not replaced!');
-                console.warn('💡 Check that MONGO_PASSWORD is set in .env file');
-            }
+        if (mongoURI.includes('<db_password>')) {
+            console.error('❌ ERROR: Password placeholder <db_password> not replaced!');
+            console.error('💡 Make sure MONGO_PASSWORD is set in .env file');
+            console.error('💡 Run: node test-mongo-connection.js to verify configuration');
+            throw new Error('MONGO_PASSWORD not set in .env file');
         }
 
         const options = {
