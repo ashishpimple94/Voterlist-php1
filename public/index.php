@@ -1,83 +1,47 @@
 <?php
 /**
- * Render Deployment Entry Point
- * Routes requests to appropriate API endpoints
+ * Render Deployment Entry Point - Simplified Version
  */
 
-// Load environment variables
-require_once __DIR__ . '/../env_load.php';
+header('Content-Type: application/json');
 
-// Set error reporting based on environment
-if (env('APP_DEBUG', false) === true || env('APP_DEBUG', false) === 'true') {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-} else {
-    error_reporting(0);
-    ini_set('display_errors', 0);
+// Load environment if exists
+$envFile = __DIR__ . '/../env_load.php';
+if (file_exists($envFile)) {
+    require_once $envFile;
 }
 
-// Get the request URI
+// Get request path
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
-$requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$path = trim(parse_url($requestUri, PHP_URL_PATH), '/');
 
-// Remove query string
-$path = parse_url($requestUri, PHP_URL_PATH);
-$path = trim($path, '/');
-
-// Route to appropriate API file
-$routes = [
-    'health' => 'health.php',
-    'simple_test' => 'simple_test.php',
-];
-
-// Default route
+// Simple routing
 if (empty($path) || $path === '/') {
-    header('Content-Type: application/json');
     echo json_encode([
         'status' => 'success',
         'message' => 'Voter API is running',
         'version' => '1.0',
-        'endpoints' => [
-            '/' => 'GET - API status',
-            '/health' => 'GET - Health check',
-            '/simple_test' => 'GET - Simple test endpoint',
-        ]
+        'endpoints' => ['/', '/health', '/simple_test']
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-// Check if route exists
-$routeFound = false;
-foreach ($routes as $route => $file) {
-    if ($path === $route || strpos($path, $route . '/') === 0) {
-        $routeFound = true;
-        // Routes are in same directory as index.php
-        $filePath = __DIR__ . '/' . $file;
-        
-        if (file_exists($filePath)) {
-            // Preserve query string
-            parse_str($_SERVER['QUERY_STRING'] ?? '', $queryParams);
-            foreach ($queryParams as $key => $value) {
-                $_GET[$key] = $value;
-            }
-            
-            // Include the API file
-            require_once $filePath;
-            exit;
-        }
-    }
-}
-
-// 404 Not Found
-if (!$routeFound) {
-    http_response_code(404);
-    header('Content-Type: application/json');
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Endpoint not found',
-        'path' => $path,
-        'available_endpoints' => array_keys($routes)
-    ], JSON_UNESCAPED_UNICODE);
+// Route to health
+if ($path === 'health' || $path === 'health.php') {
+    require_once __DIR__ . '/health.php';
     exit;
 }
 
+// Route to simple_test
+if ($path === 'simple_test' || $path === 'simple_test.php') {
+    require_once __DIR__ . '/simple_test.php';
+    exit;
+}
+
+// 404
+http_response_code(404);
+echo json_encode([
+    'status' => 'error',
+    'message' => 'Endpoint not found',
+    'path' => $path
+], JSON_UNESCAPED_UNICODE);
