@@ -6,7 +6,7 @@
 header('Content-Type: application/json');
 
 // Load environment if exists
-$envFile = __DIR__ . '/../env_load.php';
+$envFile = dirname(__DIR__) . '/env_load.php';
 if (file_exists($envFile)) {
     require_once $envFile;
 }
