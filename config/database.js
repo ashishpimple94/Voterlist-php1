@@ -23,20 +23,26 @@ const connectDB = async () => {
             if (mongoURI.includes('<db_password>')) {
                 if (!process.env.MONGO_PASSWORD) {
                     console.error('❌ MONGO_PASSWORD is required when using <db_password> placeholder');
+                    console.error('💡 Add MONGO_PASSWORD=your_password to your .env file');
                     return;
                 }
-                mongoURI = mongoURI.replace('<db_password>', encodeURIComponent(process.env.MONGO_PASSWORD));
+                const password = process.env.MONGO_PASSWORD.trim();
+                // URL encode password to handle special characters
+                const encodedPassword = encodeURIComponent(password);
+                mongoURI = mongoURI.replace('<db_password>', encodedPassword);
+                console.log('🔐 Password placeholder replaced');
             }
             
             // Add database name if not present in connection string
-            if (!mongoURI.includes('/voter_db') && !mongoURI.includes('/?') && process.env.MONGO_DB) {
-                const dbName = process.env.MONGO_DB;
-                // Replace ? with /dbname? if ? exists, else append /dbname
+            const dbName = process.env.MONGO_DB || 'voter_db';
+            if (!mongoURI.match(/\/[^/?]+(\?|$)/)) {
+                // No database name in URI, add it
                 if (mongoURI.includes('?')) {
                     mongoURI = mongoURI.replace('?', `/${dbName}?`);
                 } else {
                     mongoURI = mongoURI.endsWith('/') ? `${mongoURI}${dbName}` : `${mongoURI}/${dbName}`;
                 }
+                console.log(`📂 Database name added: ${dbName}`);
             }
         } else {
             // Fallback: construct connection string
@@ -58,7 +64,20 @@ const connectDB = async () => {
         // Log connection attempt (hide credentials)
         const safeURI = mongoURI.replace(/\/\/([^:]+):([^@]+)@/, '//$1:***@');
         console.log(`🔌 Connecting to MongoDB...`);
-        console.log(`📍 URI: ${safeURI.split('@')[1] || safeURI}`);
+        const uriParts = safeURI.split('@');
+        if (uriParts.length > 1) {
+            console.log(`📍 Host: ${uriParts[1]}`);
+        } else {
+            console.log(`📍 URI: ${safeURI}`);
+        }
+        
+        // Debug: Check if password was replaced (only in development)
+        if (process.env.NODE_ENV === 'development') {
+            if (mongoURI.includes('<db_password>')) {
+                console.warn('⚠️ WARNING: Password placeholder <db_password> not replaced!');
+                console.warn('💡 Check that MONGO_PASSWORD is set in .env file');
+            }
+        }
 
         const options = {
             maxPoolSize: 10,

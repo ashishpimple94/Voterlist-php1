@@ -59,8 +59,7 @@ const voterSchema = new mongoose.Schema({
     collection: 'voters'
 });
 
-// Indexes
-voterSchema.index({ epicNumber: 1 });
+// Indexes (epicNumber index is already created by unique: true, so only add text search)
 voterSchema.index({ name: 'text' });
 
 module.exports = mongoose.model('Voter', voterSchema);
