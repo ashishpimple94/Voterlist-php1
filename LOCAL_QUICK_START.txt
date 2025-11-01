@@ -1,0 +1,159 @@
+===========================================
+LOCAL PROJECT CHALANE KE LIYE - QUICK START
+===========================================
+
+Option 1: Docker Use Karein (Easiest)
+===========================================
+
+STEP 1: Docker Install Karein (Agar nahi hai)
+-----------------------------------------------
+macOS pe:
+1. https://www.docker.com/products/docker-desktop se download karo
+2. Install karo aur open karo
+3. Verify: docker --version
+
+STEP 2: Project Start Karein
+-----------------------------------------------
+cd /Users/ashishpimple/Desktop/voter_api_project
+
+# Dependencies install (agar composer hai)
+composer install
+
+# Docker containers start karo
+docker-compose up -d
+
+# Browser mein kholo
+open http://localhost:8080
+
+STEP 3: Stop Karne Ke Liye
+-----------------------------------------------
+docker-compose down
+
+
+===========================================
+Option 2: PHP Built-in Server (Simple)
+===========================================
+
+STEP 1: PHP Install Karein (macOS)
+-----------------------------------------------
+brew install php
+
+# Verify
+php --version
+
+STEP 2: Composer Install Karein
+-----------------------------------------------
+# Composer install
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+sudo mv composer.phar /usr/local/bin/composer
+
+# Ya phir
+brew install composer
+
+STEP 3: Dependencies Install Karein
+-----------------------------------------------
+cd /Users/ashishpimple/Desktop/voter_api_project
+composer install
+
+STEP 4: .env File Update Karein
+-----------------------------------------------
+# .env file already bana di hai
+# Ab MongoDB password dalo:
+
+nano .env
+# ya
+code .env
+
+# MONGO_PASSWORD=apna_password_dalo
+
+STEP 5: PHP Server Start Karein
+-----------------------------------------------
+php -S localhost:8080 -t public
+
+# Browser mein automatically khul jayega:
+open http://localhost:8080
+
+STEP 6: Stop Karne Ke Liye
+-----------------------------------------------
+Ctrl+C (terminal mein)
+
+
+===========================================
+Option 3: Complete Manual Setup (All Steps)
+===========================================
+
+1. Homebrew Install (Agar nahi hai):
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+2. PHP Install:
+   brew install php
+
+3. Composer Install:
+   brew install composer
+
+4. MongoDB (Optional - Atlas use karo):
+   # Local MongoDB install karne ki zarurat nahi
+   # MongoDB Atlas cloud pe free account banao
+
+5. Project Setup:
+   cd /Users/ashishpimple/Desktop/voter_api_project
+   composer install
+
+6. .env File Update:
+   # MONGO_PASSWORD=your_password update karo
+
+7. Run:
+   php -S localhost:8080 -t public
+
+
+===========================================
+QUICK TEST COMMANDS
+===========================================
+
+# Health check
+curl http://localhost:8080/health.php
+
+# API info
+curl http://localhost:8080/
+
+# MongoDB test
+curl http://localhost:8080/fetch_voter_data_mongo
+
+
+===========================================
+TROUBLESHOOTING
+===========================================
+
+Problem: Port 8080 already in use
+Solution: Different port use karo
+  php -S localhost:8081 -t public
+
+Problem: Composer not found
+Solution: 
+  brew install composer
+  ya phir
+  php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php
+
+Problem: MongoDB connection failed
+Solution:
+  1. .env file mein MONGO_PASSWORD check karo
+  2. MongoDB Atlas IP whitelist check karo (0.0.0.0/0)
+
+Problem: PHP extension missing
+Solution:
+  brew install php (sab extensions saath mein aati hain)
+
+
+===========================================
+RECOMMENDED: Easiest Method
+===========================================
+
+1. Docker Desktop install karo
+2. docker-compose up -d
+3. http://localhost:8080 kholo
+
+That's it! ✅
+
+
