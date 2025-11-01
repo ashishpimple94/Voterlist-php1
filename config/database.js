@@ -5,6 +5,8 @@
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
+    let mongoURI = ''; // Declare outside try block for error handling
+    
     try {
         // Skip connection if MongoDB URI not provided
         if (!process.env.MONGO_CONNECTION_STRING && !process.env.MONGO_HOST) {
@@ -14,7 +16,6 @@ const connectDB = async () => {
         }
 
         // Get connection string from environment variables
-        let mongoURI;
         
         if (process.env.MONGO_CONNECTION_STRING) {
             mongoURI = process.env.MONGO_CONNECTION_STRING.trim();
@@ -111,9 +112,27 @@ const connectDB = async () => {
         console.error('❌ MongoDB connection error:', error.message);
         console.error('');
         
-        // Extract username for display
-        const userMatch = mongoURI.match(/mongodb\+srv:\/\/([^:]+):/);
-        const username = userMatch ? userMatch[1] : 'unknown';
+        // Extract username for display (if mongoURI is available)
+        let username = 'unknown';
+        if (mongoURI) {
+            const userMatch = mongoURI.match(/mongodb\+srv:\/\/([^:]+):/);
+            if (userMatch) {
+                username = userMatch[1];
+            } else {
+                // Try mongodb:// format
+                const userMatch2 = mongoURI.match(/mongodb:\/\/([^:]+):/);
+                if (userMatch2) {
+                    username = userMatch2[1];
+                }
+            }
+        } else {
+            // Fallback: try to get username from env
+            const connectionString = process.env.MONGO_CONNECTION_STRING || '';
+            const userMatch = connectionString.match(/mongodb\+srv:\/\/([^:]+):/);
+            if (userMatch) {
+                username = userMatch[1];
+            }
+        }
         
         if (error.message.includes('authentication failed') || error.message.includes('bad auth')) {
             console.error('🔴 AUTHENTICATION FAILED');
