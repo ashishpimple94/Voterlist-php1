@@ -1,29 +1,18 @@
 services:
   - type: web
     name: voter-api
-    runtime: php
+    runtime: node
     plan: free
-    buildCommand: composer install --no-dev --optimize-autoloader
-    startCommand: cd public && php -S 0.0.0.0:$PORT
+    buildCommand: npm install
+    startCommand: node server.js
     envVars:
-      - key: PHP_VERSION
-        value: 8.2
-      - key: APP_ENV
+      - key: NODE_ENV
         value: production
-      - key: APP_DEBUG
-        value: false
-      - key: DB_HOST
-        sync: false
-      - key: DB_USER
-        sync: false
-      - key: DB_PASSWORD
-        sync: false
-      - key: DB_NAME
-        sync: false
+      - key: PORT
+        value: 3000
       - key: MONGO_CONNECTION_STRING
         sync: false
       - key: MONGO_PASSWORD
         sync: false
       - key: MONGO_DB
-        sync: false
-
+        value: voter_db
